@@ -6,7 +6,6 @@ const session = require("express-session");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const errorHandler = require("errorhandler");
-
 mongoose.promise = global.Promise;
 const isProduction = process.env.NODE_ENV === "production";
 
