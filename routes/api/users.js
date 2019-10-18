@@ -30,7 +30,7 @@ router.post('/register', auth.optional, async (req, res, next) => {
   return finalUser.save()
     .then(() => res.json({ user: finalUser.toAuthJSON() })).catch(err => res.status(401).json({
         errors: {
-          messagec: 'user already exist',
+          message: 'user already exist',
         },
       }));
 });
