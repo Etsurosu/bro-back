@@ -9,7 +9,6 @@ const errorHandler = require("errorhandler");
 
 mongoose.promise = global.Promise;
 const isProduction = process.env.NODE_ENV === "production";
-
 const app = express();
 
 app.use(logger("dev"));
