@@ -10,10 +10,10 @@ router.post("/register", auth.optional, async (req, res) => {
     body: { user }
   } = req;
 
-  if (!user.email) {
+  if (!user.pseudo) {
     return res.status(400).json({
       errors: {
-        email: "is required"
+        pseudo: "is required"
       }
     });
   }
@@ -47,10 +47,10 @@ router.post("/login", auth.optional, (req, res, next) => {
     body: { user }
   } = req;
 
-  if (!user.email) {
+  if (!user.pseudo) {
     return res.status(400).json({
       errors: {
-        email: "is required"
+        pseudo: "is required"
       }
     });
   }

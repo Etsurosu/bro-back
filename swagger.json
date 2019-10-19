@@ -134,7 +134,7 @@
       "userLogin": {
         "type": "object",
         "properties": {
-          "email": {
+          "pseudo": {
             "type": "string"
           },
           "password": {
@@ -145,10 +145,7 @@
       "authUser": {
         "type": "object",
         "properties": {
-          "_id": {
-            "type": "string"
-          },
-          "email": {
+          "pseudo": {
             "type": "string"
           },
           "token": {

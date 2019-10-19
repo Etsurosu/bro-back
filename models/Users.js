@@ -1,3 +1,4 @@
+/* eslint-disable func-names */
 /* eslint-disable no-underscore-dangle */
 const mongoose = require("mongoose");
 const crypto = require("crypto");
@@ -6,11 +7,9 @@ const jwt = require("jsonwebtoken");
 const { Schema } = mongoose;
 
 const UsersSchema = new Schema({
-  email: { type: String, unique: true, required: true, dropDups: true },
+  pseudo: { type: String, unique: true, required: true, dropDups: true },
   hash: String,
-  salt: String,
-  pseudo: String,
-  name: String
+  salt: String
 });
 
 UsersSchema.methods.setPassword = function(password) {
@@ -30,8 +29,8 @@ UsersSchema.methods.generateJWT = function() {
 
   return jwt.sign(
     {
-      email: this.email,
       id: this._id,
+      pseudo: this.pseudo,
       exp: parseInt(expirationDate.getTime() / 1000, 10)
     },
     "broback"
@@ -40,9 +39,14 @@ UsersSchema.methods.generateJWT = function() {
 
 UsersSchema.methods.toAuthJSON = function() {
   return {
-    _id: this._id,
-    email: this.email,
+    pseudo: this.pseudo,
     token: this.generateJWT()
+  };
+};
+
+UsersSchema.methods.toMeJSON = function() {
+  return {
+    pseudo: this.pseudo
   };
 };
 
