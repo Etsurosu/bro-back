@@ -5,7 +5,7 @@ const auth = require("../auth");
 
 const Users = mongoose.model("Users");
 
-router.post("/register", auth.optional, (req, res) => {
+router.post("/register", auth.optional, async (req, res) => {
   const {
     body: { user }
   } = req;
@@ -28,13 +28,13 @@ router.post("/register", auth.optional, (req, res) => {
 
   const finalUser = new Users(user);
 
-  finalUser.setPassword(user.password);
+  await finalUser.setPassword(user.password);
 
   return finalUser
     .save()
     .then(() => res.json({ user: finalUser.toAuthJSON() }))
     .catch(() =>
-      res.status(401).json({
+      res.status(400).json({
         errors: {
           message: "user already exist"
         }
@@ -48,7 +48,7 @@ router.post("/login", auth.optional, (req, res, next) => {
   } = req;
 
   if (!user.email) {
-    return res.status(422).json({
+    return res.status(400).json({
       errors: {
         email: "is required"
       }
@@ -56,7 +56,7 @@ router.post("/login", auth.optional, (req, res, next) => {
   }
 
   if (!user.password) {
-    return res.status(422).json({
+    return res.status(400).json({
       errors: {
         password: "is required"
       }
@@ -79,18 +79,16 @@ router.post("/login", auth.optional, (req, res, next) => {
   })(req, res, next);
 });
 
-router.get("/current", auth.required, (req, res) => {
+router.get("/current", auth.required, async (req, res) => {
   const {
     payload: { id }
   } = req;
 
-  return Users.findById(id).then(user => {
-    if (!user) {
-      return res.sendStatus(400);
-    }
-
-    return res.json({ user: user.toAuthJSON() });
-  });
+  const user = await Users.findById(id);
+  if (!user) {
+    return res.status(404).json({ error: "user not found" });
+  }
+  return res.json({ user: user.toAuthJSON() });
 });
 
 module.exports = router;

@@ -6,6 +6,8 @@ const session = require("express-session");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const errorHandler = require("errorhandler");
+const swaggerUi = require("swagger-ui-express");
+const swaggerDocument = require("./swagger.json");
 
 mongoose.promise = global.Promise;
 const isProduction = process.env.NODE_ENV === "production";
@@ -20,7 +22,7 @@ app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, "public")));
 app.use(
   session({
-    secret: "passport-tutorial",
+    secret: "broback",
     cookie: { maxAge: 60000 },
     resave: false,
     saveUninitialized: false
@@ -36,6 +38,8 @@ mongoose.set("debug", true);
 
 require("./models/Users");
 require("./config/passport");
+
+app.use("/api/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use(require("./routes"));
 
 if (!isProduction) {
