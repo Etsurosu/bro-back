@@ -39,12 +39,16 @@ mongoose.set("debug", true);
 require("./models/Users");
 require("./config/passport");
 
-app.use("/api/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+const swaggerOpts = {
+  customCss: ".swagger-ui .topbar { display: none }"
+};
+
+app.use("/api/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument, swaggerOpts));
 app.use(require("./routes"));
 
 if (!isProduction) {
   app.use((err, req, res, next) => {
-    res.status(err.status || 500);
+    res.status(err.status || 400);
 
     res.json({
       errors: {
