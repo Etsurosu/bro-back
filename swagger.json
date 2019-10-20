@@ -211,7 +211,6 @@
         "operationId": "userUpdate",
         "tags": ["Profil operations"],
         "requestBody": {
-          "optional": true,
           "required": false,
           "content": {
             "application/json": {
