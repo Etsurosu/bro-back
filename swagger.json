@@ -205,6 +205,54 @@
             }
           }
         }
+      },
+      "patch": {
+        "description": "update user infos",
+        "operationId": "userUpdate",
+        "tags": ["Profil operations"],
+        "requestBody": {
+          "optional": true,
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuthInfo"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "user updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/user"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorize request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "user not found or cannot be update",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
       }
     }
   },
