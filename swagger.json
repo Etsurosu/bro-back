@@ -18,6 +18,9 @@
   "tags": [
     {
       "name": "Auth operations"
+    },
+    {
+      "name": "Profil operations"
     }
   ],
   "paths": {
@@ -127,6 +130,82 @@
           }
         }
       }
+    },
+    "/user/me": {
+      "get": {
+        "description": "get user infos",
+        "operationId": "userInfo",
+        "tags": ["Profil operations"],
+        "responses": {
+          "200": {
+            "description": "user infos were obtained",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserInfo"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorize request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "user not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "description": "delete user",
+        "operationId": "userDelete",
+        "tags": ["Profil operations"],
+        "responses": {
+          "200": {
+            "description": "user deleted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/success"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorize request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "user not found or already deleted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -138,6 +217,22 @@
             "type": "string"
           },
           "password": {
+            "type": "string"
+          }
+        }
+      },
+      "user": {
+        "type": "object",
+        "properties": {
+          "pseudo": {
+            "type": "string"
+          }
+        }
+      },
+      "success": {
+        "type": "object",
+        "properties": {
+          "message": {
             "type": "string"
           }
         }
@@ -166,6 +261,14 @@
         "properties": {
           "user": {
             "$ref": "#/components/schemas/userLogin"
+          }
+        }
+      },
+      "UserInfo": {
+        "type": "object",
+        "properties": {
+          "user": {
+            "$ref": "#/components/schemas/user"
           }
         }
       },
