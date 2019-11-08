@@ -8,6 +8,10 @@
     {
       "url": "http://localhost:8000/api",
       "description": "local server"
+    },
+    {
+      "url": "http://92.222.92.112:8000/api",
+      "description": "prod server"
     }
   ],
   "security": [
