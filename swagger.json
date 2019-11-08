@@ -8,6 +8,10 @@
     {
       "url": "http://localhost:8000/api",
       "description": "local server"
+    },
+    {
+      "url": "http://92.222.92.112:8000/api",
+      "description": "prod server"
     }
   ],
   "security": [
@@ -18,6 +22,9 @@
   "tags": [
     {
       "name": "Auth operations"
+    },
+    {
+      "name": "Profil operations"
     }
   ],
   "paths": {
@@ -31,7 +38,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/AuthLogin"
+                "$ref": "#/components/schemas/AuthInfo"
               }
             }
           }
@@ -127,6 +134,129 @@
           }
         }
       }
+    },
+    "/user/me": {
+      "get": {
+        "description": "get user infos",
+        "operationId": "userInfo",
+        "tags": ["Profil operations"],
+        "responses": {
+          "200": {
+            "description": "user infos were obtained",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserInfo"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorize request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "user not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "description": "delete user",
+        "operationId": "userDelete",
+        "tags": ["Profil operations"],
+        "responses": {
+          "200": {
+            "description": "user deleted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/success"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorize request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "user not found or already deleted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "description": "update user infos",
+        "operationId": "userUpdate",
+        "tags": ["Profil operations"],
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuthInfo"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "user updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/user"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorize request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "user not found or cannot be update",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -138,6 +268,22 @@
             "type": "string"
           },
           "password": {
+            "type": "string"
+          }
+        }
+      },
+      "user": {
+        "type": "object",
+        "properties": {
+          "pseudo": {
+            "type": "string"
+          }
+        }
+      },
+      "success": {
+        "type": "object",
+        "properties": {
+          "message": {
             "type": "string"
           }
         }
@@ -166,6 +312,14 @@
         "properties": {
           "user": {
             "$ref": "#/components/schemas/userLogin"
+          }
+        }
+      },
+      "UserInfo": {
+        "type": "object",
+        "properties": {
+          "user": {
+            "$ref": "#/components/schemas/user"
           }
         }
       },

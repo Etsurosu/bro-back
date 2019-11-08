@@ -21,14 +21,19 @@ router.delete("/me", auth.required, async (req, res) => {
     payload: { id }
   } = req;
 
-  await Users.findByIdAndDelete(id, err => {
-    if (err) {
-      res.status(500).json({
-        error: "cannot delete profile"
-      });
-    }
-  });
-  return res.status(200);
+  const user = await Users.findById(id);
+  if (!user) {
+    return res.status(404).json({
+      error: "cannot find profile"
+    });
+  }
+  await user.remove();
+  if (!user.$isDeleted()) {
+    return res.status(400).json({
+      error: "cannot delete profile"
+    });
+  }
+  return res.status(200).json({ message: "user deleted" });
 });
 
 router.patch("/me", auth.required, async (req, res) => {
