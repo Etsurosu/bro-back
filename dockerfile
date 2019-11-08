@@ -1,6 +1,6 @@
 FROM node:11.15.0
 
-# Create app directory
+# Create app director
 WORKDIR /root/bro-back
 
 # Install app dependencies
